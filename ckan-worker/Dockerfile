@@ -3,9 +3,9 @@ FROM kowhai/ckan-base-lagoon:2.9
 LABEL maintainer="brett@kowh.ai"
 
 # Set timezone
-ARG TZ
-RUN echo $TZ > /etc/timezone
-RUN cp /usr/share/zoneinfo/$TZ /etc/localtime
+# ARG TZ
+# RUN echo $TZ > /etc/timezone
+# RUN cp /usr/share/zoneinfo/$TZ /etc/localtime
 
 # Install CKAN extensions
 RUN pip3 install -e 'git+https://github.com/DataShades/ckanext-xloader@py3#egg=ckanext-xloader' && \
