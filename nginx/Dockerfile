@@ -3,7 +3,7 @@ FROM ${IMAGE_REPO:-uselagoon}/nginx
 
 ENV NGINX_DIR=/etc/nginx
 
-COPY index.html /usr/share/nginx/html/index.html
+COPY nginx/index.html /usr/share/nginx/html/index.html
 
 RUN mkdir -p ${NGINX_DIR}/sites-available
 RUN mkdir -p ${NGINX_DIR}/sites-enabled
