@@ -97,7 +97,7 @@ services:
       - pg_data:/var/lib/postgresql/data
     labels:
       # Lagoon Labels
-      lagoon.type: mariadb
+      lagoon.type: postgres-single
 
   solr:
     container_name: solr
