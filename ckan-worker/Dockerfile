@@ -24,15 +24,16 @@ RUN pip3 install iniparse && \
     chmod +x /usr/local/bin/crudini
 
 # Copy all setup files
-COPY setup ${APP_DIR}
+COPY ckan-worker/setup ${APP_DIR}
+COPY .env ${APP_DIR}
 
-COPY setup/supervisord.conf /etc/supervisord.conf
-COPY setup/supervisor.worker.conf /etc/supervisord.d/supervisor.worker.conf
+COPY ckan-worker/setup/supervisord.conf /etc/supervisord.conf
+COPY ckan-worker/setup/supervisor.worker.conf /etc/supervisord.d/supervisor.worker.conf
 #COPY setup/supervisor.uwsgi.conf /etc/supervisord.d/supervisor.uwsgi.conf
-COPY setup/supervisor.harvest.conf /etc/supervisord.d/supervisor.harvest.conf
+COPY ckan-worker/setup/supervisor.harvest.conf /etc/supervisord.d/supervisor.harvest.conf
 
 # Copy templated extension configuration
-COPY setup/extension-configs.ini $(APP_DIR}/extension-configs.ini
+COPY ckan-worker/setup/extension-configs.ini $(APP_DIR}/extension-configs.ini
 
 # Create local storage folder
 RUN mkdir -p $CKAN_STORAGE_PATH && \

@@ -24,13 +24,14 @@ RUN pip install iniparse && \
     chmod +x /usr/local/bin/crudini
     
 # Copy all setup files
-COPY setup ${APP_DIR}
+COPY ckan-web/setup ${APP_DIR}
+COPY .env ${APP_DIR}
 
-COPY setup/supervisord.conf /etc/supervisord.conf
-COPY setup/supervisor.uwsgi.conf /etc/supervisord.d/supervisor.uwsgi.conf
+COPY ckan-web/setup/supervisord.conf /etc/supervisord.conf
+COPY ckan-web/setup/supervisor.uwsgi.conf /etc/supervisord.d/supervisor.uwsgi.conf
 
 # Copy templated extension configuration
-COPY setup/extension-configs.ini ${APP_DIR}/extension-configs.ini
+COPY ckan-web/setup/extension-configs.ini ${APP_DIR}/extension-configs.ini
 
 # Create local storage folder
 RUN mkdir -p $CKAN_STORAGE_PATH && \

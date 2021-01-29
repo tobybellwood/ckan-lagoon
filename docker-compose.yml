@@ -5,8 +5,8 @@ services:
   nginx:
     container_name: nginx
     build:
-      context: nginx/
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: nginx/Dockerfile
     links:
       - ckan-web
     ports:
@@ -18,8 +18,8 @@ services:
   ckan-worker:
     container_name: ckan-worker
     build:
-      context: ckan-worker/
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ckan-worker/Dockerfile
       args:
         - TZ=${TZ}
     env_file:
@@ -50,8 +50,8 @@ services:
   ckan-web:
     container_name: ckan-web
     build:
-      context: ckan-web/
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ckan-web/Dockerfile
       args:
         - TZ=${TZ}
     env_file:
