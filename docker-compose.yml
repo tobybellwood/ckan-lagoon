@@ -10,7 +10,10 @@ services:
     links:
       - ckan-web
     ports:
-      - "0.0.0.0:80:80"
+      - "8081:80"
+    labels:
+      # Lagoon Labels
+      lagoon.type: nginx
 
   ckan-worker:
     container_name: ckan-worker
@@ -27,6 +30,9 @@ services:
       - redis
     ports:
       - "8800:8800"
+    labels:
+      # Lagoon Labels
+      lagoon.type: cli
     environment:
       # Defaults work with linked containers, change to use own Postgres, SolR, Redis or Datapusher
       - CKAN_SQLALCHEMY_URL=postgresql://ckan:${POSTGRES_PASSWORD}@db/ckan
@@ -57,6 +63,9 @@ services:
       - redis
     ports:
       - "0.0.0.0:${CKAN_PORT}:5000"
+    labels:
+      # Lagoon Labels
+      lagoon.type: python
     environment:
       # Defaults work with linked containers, change to use own Postgres, SolR, Redis or Datapusher
       - CKAN_SQLALCHEMY_URL=postgresql://ckan:${POSTGRES_PASSWORD}@db/ckan
@@ -85,6 +94,9 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
       - pg_data:/var/lib/postgresql/data
+    labels:
+      # Lagoon Labels
+      lagoon.type: mariadb
 
   solr:
     container_name: solr
@@ -92,10 +104,16 @@ services:
       context: solr/
     volumes:
       - solr_data:/opt/solr/server/solr/ckan/data/index
+    labels:
+      # Lagoon Labels
+      lagoon.type: solr
 
   redis:
     container_name: redis
     image: amazeeio/redis:6-latest
+    labels:
+      # Lagoon Labels
+      lagoon.type: redis
 
 volumes:
   ckan_storage:
