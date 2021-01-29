@@ -7,6 +7,8 @@ LABEL maintainer="brett@kowh.ai"
 # RUN echo $TZ > /etc/timezone
 # RUN cp /usr/share/zoneinfo/$TZ /etc/localtime
 
+RUN apk add postgresql-client
+
 # Install CKAN extensions
 RUN pip3 install -e 'git+https://github.com/DataShades/ckanext-xloader@py3#egg=ckanext-xloader' && \
     pip3 install -r ${APP_DIR}/src/ckanext-xloader/requirements.txt && \

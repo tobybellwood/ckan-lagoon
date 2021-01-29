@@ -7,6 +7,8 @@ LABEL maintainer="brett@kowh.ai"
 # RUN echo $TZ > /etc/timezone
 # RUN cp /usr/share/zoneinfo/$TZ /etc/localtime
 
+RUN apk add postgresql-client
+
 # Install CKAN extensions
 RUN pip3 install -e 'git+https://github.com/DataShades/ckanext-xloader@py3#egg=ckanext-xloader' && \
     pip3 install -r ${APP_DIR}/src/ckanext-xloader/requirements.txt && \
@@ -44,6 +46,6 @@ RUN chown ckan -R /srv/app
 
 EXPOSE 5000
 
-HEALTHCHECK --interval=10s --timeout=5s --retries=5 CMD curl --fail http://localhost:5000/api/3/action/status_show || exit 1
+# HEALTHCHECK --interval=10s --timeout=5s --retries=5 CMD curl --fail http://localhost:5000/api/3/action/status_show || exit 1
 
 CMD ["/srv/app/start_ckan.sh"]

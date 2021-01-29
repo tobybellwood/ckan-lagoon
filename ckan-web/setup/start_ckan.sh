@@ -37,7 +37,7 @@ crudini --set --list --list-sep=' ' ${CKAN_INI} app:main ckan.plugins datastore
 crudini --set --list --list-sep=' ' ${CKAN_INI} app:main ckan.plugins xloader
 
 # Set up datastore permissions
-ckan datastore set-permissions | psql "${CKAN_SQLALCHEMY_URL}"
+ckan datastore set-permissions | psql "${CKAN_DATASTORE_WRITE_URL}"
 
 # Set XLoader database URI
 crudini --set --list --list-sep=' ' ${CKAN_INI} app:main ckanext.xloader.jobs_db.uri ${CKAN_SQLALCHEMY_URL}

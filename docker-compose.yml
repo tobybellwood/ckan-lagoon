@@ -35,11 +35,11 @@ services:
       lagoon.type: cli
     environment:
       # Defaults work with linked containers, change to use own Postgres, SolR, Redis or Datapusher
-      - CKAN_SQLALCHEMY_URL=postgresql://ckan:${POSTGRES_PASSWORD}@db/ckan
-      - CKAN_DATASTORE_WRITE_URL=postgresql://ckan:${POSTGRES_PASSWORD}@db/datastore
-      - CKAN_DATASTORE_READ_URL=postgresql://datastore_ro:${DATASTORE_READONLY_PASSWORD}@db/datastore
-      - CKAN_SOLR_URL=http://solr:8983/solr/ckan
-      - CKAN_REDIS_URL=redis://redis:6379/0
+      - CKAN_SQLALCHEMY_URL=${CKAN_SQLALCHEMY_URL}
+      - CKAN_DATASTORE_WRITE_URL=${CKAN_DATASTORE_WRITE_URL}
+      - CKAN_DATASTORE_READ_URL=${CKAN_DATASTORE_READ_URL}
+      - CKAN_SOLR_URL=${CKAN_SOLR_URL}
+      - CKAN_REDIS_URL=${CKAN_REDIS_URL}
       - CKAN_SITE_URL=${CKAN_SITE_URL}
       - CKAN_SITE_TITLE=${CKAN_SITE_TITLE}
       - CKAN_MAX_UPLOAD_SIZE_MB=${CKAN_MAX_UPLOAD_SIZE_MB}
@@ -68,11 +68,11 @@ services:
       lagoon.type: python
     environment:
       # Defaults work with linked containers, change to use own Postgres, SolR, Redis or Datapusher
-      - CKAN_SQLALCHEMY_URL=postgresql://ckan:${POSTGRES_PASSWORD}@db/ckan
-      - CKAN_DATASTORE_WRITE_URL=postgresql://ckan:${POSTGRES_PASSWORD}@db/datastore
-      - CKAN_DATASTORE_READ_URL=postgresql://datastore_ro:${DATASTORE_READONLY_PASSWORD}@db/datastore
-      - CKAN_SOLR_URL=http://solr:8983/solr/ckan
-      - CKAN_REDIS_URL=redis://redis:6379/0
+      - CKAN_SQLALCHEMY_URL=${CKAN_SQLALCHEMY_URL}
+      - CKAN_DATASTORE_WRITE_URL=${CKAN_DATASTORE_WRITE_URL}
+      - CKAN_DATASTORE_READ_URL=${CKAN_DATASTORE_READ_URL}
+      - CKAN_SOLR_URL=${CKAN_SOLR_URL}
+      - CKAN_REDIS_URL=${CKAN_REDIS_URL}
       - CKAN_SITE_URL=${CKAN_SITE_URL}
       - CKAN_SITE_TITLE=${CKAN_SITE_TITLE}
       - CKAN_MAX_UPLOAD_SIZE_MB=${CKAN_MAX_UPLOAD_SIZE_MB}
@@ -84,17 +84,18 @@ services:
 
   db:
     container_name: db
-    build:
-      context: .
-      dockerfile: postgresql/Dockerfile
-      args:
-        - DATASTORE_READONLY_PASSWORD=${DATASTORE_READONLY_PASSWORD}
-        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-    environment:
-      - DATASTORE_READONLY_PASSWORD=${DATASTORE_READONLY_PASSWORD}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    image: uselagoon/postgres-11
     volumes:
-      - pg_data:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
+    labels:
+      # Lagoon Labels
+      lagoon.type: postgres-single
+
+  datastore:
+    container_name: datastore
+    image: uselagoon/postgres-11
+    volumes:
+      - datastore_data:/var/lib/postgresql/data
     labels:
       # Lagoon Labels
       lagoon.type: postgres-single
@@ -119,5 +120,6 @@ services:
 
 volumes:
   ckan_storage:
-  pg_data:
+  db_data:
+  datastore_data:
   solr_data:
