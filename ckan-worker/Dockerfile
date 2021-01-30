@@ -35,7 +35,8 @@ COPY ckan-worker/setup/supervisor.worker.conf /etc/supervisord.d/supervisor.work
 COPY ckan-worker/setup/supervisor.harvest.conf /etc/supervisord.d/supervisor.harvest.conf
 
 # Copy templated extension configuration
-COPY ckan-worker/setup/extension-configs.ini $(APP_DIR}/extension-configs.ini
+COPY ckan-worker/setup/extension-configs.ini ${APP_DIR}/extension-configs.ini
+COPY ckan-worker/setup/create_datastore_user.sql ${APP_DIR}
 
 # Create local storage folder
 RUN mkdir -p $CKAN_STORAGE_PATH && \

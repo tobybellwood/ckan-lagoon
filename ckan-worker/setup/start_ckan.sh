@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# Configure the datastore read-only user
+
+until psql "${CKAN_DATASTORE_WRITE_URL}" -c '\q'; do
+  >&2 echo "Postgres is unavailable - sleeping"
+  sleep 1
+done
+
+psql "${CKAN_DATASTORE_WRITE_URL}" -f create_datastore_user.sql
+
 # Run the prerun script to init CKAN and create the default admin user
 sudo -u ckan -EH python3 prerun.py
 
@@ -35,6 +44,11 @@ crudini --set  ${CKAN_INI} app:main ckan.search.show_all_types datasets
 # Enable Datastore and XLoader extension in CKAN configuration
 crudini --set --list --list-sep=' ' ${CKAN_INI} app:main ckan.plugins datastore
 crudini --set --list --list-sep=' ' ${CKAN_INI} app:main ckan.plugins xloader
+
+# Set Datastore URLs
+crudini --set  ${CKAN_INI} app:main ckan.datastore.write_url ${CKAN_DATASTORE_WRITE_URL}
+crudini --set  ${CKAN_INI} app:main ckan.datastore.read_url ${CKAN_DATASTORE_READ_URL}
+crudini --set  ${CKAN_INI} app:main sqlalchemy.url ${CKAN_SQLALCHEMY_URL}
 
 # Set up datastore permissions
 ckan datastore set-permissions | psql "${CKAN_DATASTORE_WRITE_URL}"

@@ -10,7 +10,9 @@ services:
     links:
       - ckan-web
     ports:
-      - "8081:80"
+      - "8080"
+    environment:
+      LAGOON_LOCALDEV_URL: http://ckan-example.docker.amazee.io
     labels:
       # Lagoon Labels
       lagoon.type: nginx
@@ -29,7 +31,7 @@ services:
       - solr
       - redis
     ports:
-      - "8800:8800"
+      - "8800"
     labels:
       # Lagoon Labels
       lagoon.type: cli
@@ -62,7 +64,7 @@ services:
       - solr
       - redis
     ports:
-      - "0.0.0.0:${CKAN_PORT}:5000"
+      - "5000:8800"
     labels:
       # Lagoon Labels
       lagoon.type: python
@@ -90,6 +92,8 @@ services:
     labels:
       # Lagoon Labels
       lagoon.type: postgres-single
+    ports:
+      - "5432"
 
   datastore:
     container_name: datastore
@@ -99,7 +103,9 @@ services:
     labels:
       # Lagoon Labels
       lagoon.type: postgres-single
-
+    ports:
+      - "5432"
+      
   solr:
     container_name: solr
     build:
@@ -117,6 +123,8 @@ services:
     labels:
       # Lagoon Labels
       lagoon.type: redis
+    ports:
+      - "6379"
 
 volumes:
   ckan_storage:
