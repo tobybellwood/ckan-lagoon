@@ -31,6 +31,7 @@ RUN pip3 install iniparse && \
 # Copy all setup files
 COPY ckan-worker/setup ${APP_DIR}
 COPY .env ${APP_DIR}
+COPY ckan.lagoon.ini ${APP_DIR}
 
 COPY ckan-worker/setup/supervisord.conf /etc/supervisord.conf
 COPY ckan-worker/setup/supervisor.worker.conf /etc/supervisord.d/supervisor.worker.conf

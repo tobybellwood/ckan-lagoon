@@ -22,10 +22,6 @@ if [ -d /lagoon/entrypoints ]; then
   unset i
 fi
 
-if [ -d ${APP_DIR}/.env ]; then
-  source ${APP_DIR}/.env
-fi
-
 # Configure the datastore read-only user
 
 until psql "${CKAN_DATASTORE_WRITE_URL}" -c '\q'; do
@@ -42,46 +38,16 @@ sudo -u ckan -EH python3 prerun.py
 mkdir -p ${CKAN_STORAGE_PATH}/storage/uploads/user && mkdir -p ${CKAN_STORAGE_PATH}/resources
 chown -R ckan:ckan ${CKAN_STORAGE_PATH} ${APP_DIR} && chmod -R 777 ${CKAN_STORAGE_PATH}
 
-# Set site URL
-crudini --set  ${CKAN_INI} app:main ckan.site_url ${CKAN_SITE_URL}
-
-# Set global theme
-crudini --set  ${CKAN_INI} app:main ckan.site_title ${CKAN_SITE_TITLE}
-
-# Set default locale
-crudini --set  ${CKAN_INI} app:main ckan.locale_default en_AU
-
-# Configure global search
-crudini --set  ${CKAN_INI} app:main ckan.search.show_all_types datasets
-
-# Enable Datastore and XLoader extension in CKAN configuration
-crudini --set --list --list-sep=' ' ${CKAN_INI} app:main ckan.plugins datastore
-crudini --set --list --list-sep=' ' ${CKAN_INI} app:main ckan.plugins xloader
-
-# Set Datastore URLs
-crudini --set  ${CKAN_INI} app:main ckan.datastore.write_url ${CKAN_DATASTORE_WRITE_URL}
-crudini --set  ${CKAN_INI} app:main ckan.datastore.read_url ${CKAN_DATASTORE_READ_URL}
-crudini --set  ${CKAN_INI} app:main sqlalchemy.url ${CKAN_SQLALCHEMY_URL}
-
 # Set up datastore permissions
 ckan datastore set-permissions | psql "${CKAN_DATASTORE_WRITE_URL}"
 
-# Set XLoader database URI
-crudini --set --list --list-sep=' ' ${CKAN_INI} app:main ckanext.xloader.jobs_db.uri ${CKAN_SQLALCHEMY_URL}
+# envplate the default lagoon config
+if [ -d ${APP_DIR}/ckan.lagoon.ini ]; then
+  /bin/ep ${APP_DIR}/ckan.lagoon.ini
+fi
 
-### Add custom CKAN extensions to configuration
-
-# ckanext-scheming
-crudini --set --list --list-sep=' ' ${CKAN_INI} app:main ckan.plugins scheming_organizations
-crudini --set --list --list-sep=' ' ${CKAN_INI} app:main ckan.plugins scheming_datasets
-crudini --set --list --list-sep=' ' ${CKAN_INI} app:main ckan.plugins scheming_groups
-
-# ckanext-harvest
-crudini --set --list --list-sep=' ' ${CKAN_INI} app:main ckan.plugins harvest
-
-# ckanext-syndicate
-#crudini --set --list --list-sep=' ' ${CKAN_INI} app:main ckan.plugins syndicate
-#ckan syndicate init
+# Merge Lagoon-specific configuration into main CKAN config file
+crudini --merge ${CKAN_INI} < ${APP_DIR}/ckan.lagoon.ini
 
 # Merge extension configuration options into main CKAN config file.
 crudini --merge ${CKAN_INI} < ${APP_DIR}/extension-configs.ini
