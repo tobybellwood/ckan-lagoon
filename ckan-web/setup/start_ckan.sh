@@ -22,6 +22,10 @@ if [ -d /lagoon/entrypoints ]; then
   unset i
 fi
 
+if [ -d ${APP_DIR}/.env ]; then
+  source ${APP_DIR}/.env
+fi
+
 # Run the prerun script to init CKAN and create the default admin user
 sudo -u ckan -EH python3 prerun.py
 

@@ -22,6 +22,10 @@ if [ -d /lagoon/entrypoints ]; then
   unset i
 fi
 
+if [ -d ${APP_DIR}/.env ]; then
+  source ${APP_DIR}/.env
+fi
+
 # Configure the datastore read-only user
 
 until psql "${CKAN_DATASTORE_WRITE_URL}" -c '\q'; do
