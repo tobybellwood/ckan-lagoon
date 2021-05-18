@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Run the prerun script to init CKAN and create the default admin user
-sudo -u ckan -EH python3 prerun.py
-
 # Run any startup scripts provided by images extending this one
 if [[ -d "/docker-entrypoint.d" ]]
 then
@@ -24,6 +21,9 @@ if [ -d /lagoon/entrypoints ]; then
   done
   unset i
 fi
+
+# Run the prerun script to init CKAN and create the default admin user
+sudo -u ckan -EH python3 prerun.py
 
 # Ensure correct permissions for CKAN storage
 mkdir -p ${CKAN_STORAGE_PATH}/storage/uploads/user && mkdir -p ${CKAN_STORAGE_PATH}/resources

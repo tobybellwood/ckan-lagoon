@@ -9,6 +9,8 @@ LABEL maintainer="brett@kowh.ai"
 
 RUN apk add postgresql-client
 
+WORKDIR ${APP_DIR}
+
 ENV CRYPTOGRAPHY_DONT_BUILD_RUST=1
 # Install CKAN extensions
 RUN pip3 install -e 'git+https://github.com/DataShades/ckanext-xloader@py3#egg=ckanext-xloader' && \

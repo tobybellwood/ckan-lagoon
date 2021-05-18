@@ -1,17 +1,5 @@
 #!/bin/bash
 
-# Configure the datastore read-only user
-
-until psql "${CKAN_DATASTORE_WRITE_URL}" -c '\q'; do
-  >&2 echo "Postgres is unavailable - sleeping"
-  sleep 1
-done
-
-psql "${CKAN_DATASTORE_WRITE_URL}" -f create_datastore_user.sql
-
-# Run the prerun script to init CKAN and create the default admin user
-sudo -u ckan -EH python3 prerun.py
-
 # Run any startup scripts provided by images extending this one
 if [[ -d "/docker-entrypoint.d" ]]
 then
@@ -33,6 +21,18 @@ if [ -d /lagoon/entrypoints ]; then
   done
   unset i
 fi
+
+# Configure the datastore read-only user
+
+until psql "${CKAN_DATASTORE_WRITE_URL}" -c '\q'; do
+  >&2 echo "Postgres is unavailable - sleeping"
+  sleep 1
+done
+
+psql "${CKAN_DATASTORE_WRITE_URL}" -f create_datastore_user.sql
+
+# Run the prerun script to init CKAN and create the default admin user
+sudo -u ckan -EH python3 prerun.py
 
 # Ensure correct permissions for CKAN storage
 mkdir -p ${CKAN_STORAGE_PATH}/storage/uploads/user && mkdir -p ${CKAN_STORAGE_PATH}/resources
