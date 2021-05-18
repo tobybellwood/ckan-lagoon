@@ -91,7 +91,7 @@ services:
       - db_data:/var/lib/postgresql/data
     labels:
       # Lagoon Labels
-      lagoon.type: postgres-single
+      lagoon.type: postgres
     ports:
       - "5432"
 
@@ -102,7 +102,7 @@ services:
       - datastore_data:/var/lib/postgresql/data
     labels:
       # Lagoon Labels
-      lagoon.type: postgres-single
+      lagoon.type: postgres
     ports:
       - "5432"
       
