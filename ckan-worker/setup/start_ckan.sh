@@ -42,7 +42,7 @@ chown -R ckan:ckan ${CKAN_STORAGE_PATH} ${APP_DIR} && chmod -R 777 ${CKAN_STORAG
 ckan datastore set-permissions | psql "${CKAN_DATASTORE_WRITE_URL}"
 
 # envplate the default lagoon config
-if [ -d ${APP_DIR}/ckan.lagoon.ini ]; then
+if [ -f ${APP_DIR}/ckan.lagoon.ini ]; then
   /bin/ep ${APP_DIR}/ckan.lagoon.ini
 fi
 
