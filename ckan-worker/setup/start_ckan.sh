@@ -22,6 +22,13 @@ if [ -d /lagoon/entrypoints ]; then
   unset i
 fi
 
+# envplate the default lagoon config
+if [ -f ${APP_DIR}/ckan.lagoon.ini ]; then
+  /bin/ep ${APP_DIR}/ckan.lagoon.ini
+  # Merge Lagoon-specific configuration into main CKAN config file
+  crudini --merge ${CKAN_INI} < ${APP_DIR}/ckan.lagoon.ini
+fi
+
 # Configure the datastore read-only user
 
 until psql "${CKAN_DATASTORE_WRITE_URL}" -c '\q'; do
@@ -40,14 +47,6 @@ chown -R ckan:ckan ${CKAN_STORAGE_PATH} ${APP_DIR} && chmod -R 777 ${CKAN_STORAG
 
 # Set up datastore permissions
 ckan datastore set-permissions | psql "${CKAN_DATASTORE_WRITE_URL}"
-
-# envplate the default lagoon config
-if [ -f ${APP_DIR}/ckan.lagoon.ini ]; then
-  /bin/ep ${APP_DIR}/ckan.lagoon.ini
-fi
-
-# Merge Lagoon-specific configuration into main CKAN config file
-crudini --merge ${CKAN_INI} < ${APP_DIR}/ckan.lagoon.ini
 
 # Merge extension configuration options into main CKAN config file.
 crudini --merge ${CKAN_INI} < ${APP_DIR}/extension-configs.ini
