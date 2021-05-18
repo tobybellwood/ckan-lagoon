@@ -25,6 +25,15 @@ then
     done
 fi
 
+if [ -d /lagoon/entrypoints ]; then
+  for i in /lagoon/entrypoints/*; do
+    if [ -r $i ]; then
+      . $i
+    fi
+  done
+  unset i
+fi
+
 # Ensure correct permissions for CKAN storage
 mkdir -p ${CKAN_STORAGE_PATH}/storage/uploads/user && mkdir -p ${CKAN_STORAGE_PATH}/resources
 chown -R ckan:ckan ${CKAN_STORAGE_PATH} ${APP_DIR} && chmod -R 777 ${CKAN_STORAGE_PATH}
