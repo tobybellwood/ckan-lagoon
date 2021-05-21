@@ -37,7 +37,7 @@ until psql "${CKAN_DATASTORE_WRITE_URL}" -c '\q'; do
   sleep 1
 done
 
-psql "${CKAN_DATASTORE_WRITE_URL}" -f create_datastore_user.sql
+#psql "${CKAN_DATASTORE_WRITE_URL}" -f create_datastore_user.sql
 
 # Run the prerun script to init CKAN and create the default admin user
 sudo -u ckan -EH python3 prerun.py
