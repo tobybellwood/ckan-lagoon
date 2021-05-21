@@ -24,6 +24,7 @@ fi
 
 # envplate the default lagoon config
 if [ -f ${APP_DIR}/ckan.lagoon.ini ]; then
+  . ${APP_DIR}/ckan.lagoon.sh
   /bin/ep ${APP_DIR}/ckan.lagoon.ini
   # Merge Lagoon-specific configuration into main CKAN config file
   crudini --merge ${CKAN_INI} < ${APP_DIR}/ckan.lagoon.ini
