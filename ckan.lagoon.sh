@@ -3,7 +3,7 @@
 # Use the Lagoon variables to set the default CKAN ones
 export CKAN_SQLALCHEMY_URL=postgresql://${DB_USERNAME:-lagoon}:${DB_PASSWORD:-lagoon}@${DB_HOST:-db}:${DB_PORT:-5432}/${DB_DATABASE:-lagoon}
 export CKAN_DATASTORE_WRITE_URL=postgresql://${DATASTORE_USERNAME:-lagoon}:${DATASTORE_PASSWORD:-lagoon}@${DATASTORE_HOST:-datastore}:${DATASTORE_PORT:-5432}/${DATASTORE_DATABASE:-lagoon}
-#export CKAN_DATASTORE_READ_URL=postgresql://${DATASTORE_USERNAME:-lagoon}:${DATASTORE_PASSWORD:-lagoon}@${DATASTORE_HOST:-datastore}:${DATASTORE_PORT:-5432}/${DATASTORE_DATABASE:-lagoon}
+export CKAN_DATASTORE_READ_URL=postgresql://${DATASTORE_READONLY_USER:-datastore_ro}:${DATASTORE_READONLY_PASSWORD:-datastore_ro}@${DATASTORE_HOST:-datastore}:${DATASTORE_PORT:-5432}/${DATASTORE_DATABASE:-lagoon}
 export CKAN_REDIS_URL=${CKAN_REDIS_URL:-redis://redis:6379/0}
 export CKAN_SOLR_URL=${CKAN_SOLR_URL:-http://solr:8983/solr/ckan}
 export CKAN_SITE_ID=${LAGOON_PROJECT:-ckanlagoon}
