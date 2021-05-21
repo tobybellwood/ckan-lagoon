@@ -15,3 +15,4 @@ export CKAN_SMTP_USER=${CKAN_SMTP_USER:-user}
 export CKAN_SMTP_PASSWORD=${CKAN_SMTP_PASSWORD:-pass}
 export CKAN_SMTP_MAIL_FROM=${CKAN_SMTP_MAIL_FROM:-ckan@localhost}
 export CKAN_MAX_UPLOAD_SIZE_MB=${CKAN_MAX_UPLOAD_SIZE_MB:-100}
+export CKAN__PLUGINS="datastore xloader harvest ckan_harvester scheming_organizations scheming_datasets scheming_groups"

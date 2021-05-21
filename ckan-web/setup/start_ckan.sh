@@ -28,6 +28,7 @@ if [ -f ${APP_DIR}/ckan.lagoon.ini ]; then
   /bin/ep ${APP_DIR}/ckan.lagoon.ini
   # Merge Lagoon-specific configuration into main CKAN config file
   crudini --merge ${CKAN_INI} < ${APP_DIR}/ckan.lagoon.ini
+  cat ${CKAN_INI}
 fi
 
 # Run the prerun script to init CKAN and create the default admin user
