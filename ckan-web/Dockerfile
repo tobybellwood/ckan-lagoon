@@ -31,7 +31,7 @@ RUN pip install iniparse && \
 # Copy all setup files
 COPY ckan-web/setup ${APP_DIR}
 COPY .env ${APP_DIR}
-COPY ckan.lagoon.* ${APP_DIR}
+COPY ckan.lagoon.* ${APP_DIR}/
 
 COPY ckan-web/setup/supervisord.conf /etc/supervisord.conf
 COPY ckan-web/setup/supervisor.uwsgi.conf /etc/supervisord.d/supervisor.uwsgi.conf
