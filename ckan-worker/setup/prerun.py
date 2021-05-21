@@ -85,7 +85,7 @@ def init_db():
                   'db', 'init']
     print('[prerun] Initializing or upgrading db - start')
     try:
-        subprocess.check_output(db_command, stderr=subprocess.STDOUT)
+        subprocess.run(db_command, capture_output=True)
         print('[prerun] Initializing or upgrading db - end')
     except subprocess.CalledProcessError as e:
         if 'OperationalError' in e.output:

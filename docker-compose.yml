@@ -15,7 +15,7 @@ services:
       LAGOON_LOCALDEV_URL: http://ckan-example.docker.amazee.io
     labels:
       # Lagoon Labels
-      lagoon.type: nginx
+      lagoon.type: none
 
   ckan-worker:
     container_name: ckan-worker
