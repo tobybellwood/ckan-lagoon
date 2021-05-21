@@ -10,7 +10,7 @@ services:
     links:
       - ckan-web
     ports:
-      - "8080"
+      - "8081:80"
     environment:
       LAGOON_LOCALDEV_URL: http://ckan-example.docker.amazee.io
     labels:
@@ -31,18 +31,18 @@ services:
       - solr
       - redis
     ports:
-      - "8800"
+      - "8800:8800"
     labels:
       # Lagoon Labels
       lagoon.type: cli
     environment:
       # Defaults work with linked containers, change to use own Postgres, SolR, Redis or Datapusher
-      - CKAN_SQLALCHEMY_URL=${CKAN_SQLALCHEMY_URL}
-      - CKAN_DATASTORE_WRITE_URL=${CKAN_DATASTORE_WRITE_URL}
-      - CKAN_DATASTORE_READ_URL=${CKAN_DATASTORE_READ_URL}
-      - CKAN_SOLR_URL=${CKAN_SOLR_URL}
-      - CKAN_REDIS_URL=${CKAN_REDIS_URL}
-      - CKAN_SITE_URL=${CKAN_SITE_URL}
+      - CKAN_SQLALCHEMY_URL=postgresql://ckan:${POSTGRES_PASSWORD}@db/ckan
+      - CKAN_DATASTORE_WRITE_URL=postgresql://ckan:${POSTGRES_PASSWORD}@db/datastore
+      - CKAN_DATASTORE_READ_URL=postgresql://datastore_ro:${DATASTORE_READONLY_PASSWORD}@db/datastore
+      - CKAN_SOLR_URL=http://solr:8983/solr/ckan
+      - CKAN_REDIS_URL=redis://redis:6379/0
+      - CKAN_SITE_URL=http://ckan-example.docker.amazee.io:8081
       - CKAN_SITE_TITLE=${CKAN_SITE_TITLE}
       - CKAN_MAX_UPLOAD_SIZE_MB=${CKAN_MAX_UPLOAD_SIZE_MB}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -64,18 +64,18 @@ services:
       - solr
       - redis
     ports:
-      - "5000:8800"
+      - "0.0.0.0:5000:5000"
     labels:
       # Lagoon Labels
       lagoon.type: python
     environment:
       # Defaults work with linked containers, change to use own Postgres, SolR, Redis or Datapusher
-      - CKAN_SQLALCHEMY_URL=${CKAN_SQLALCHEMY_URL}
-      - CKAN_DATASTORE_WRITE_URL=${CKAN_DATASTORE_WRITE_URL}
-      - CKAN_DATASTORE_READ_URL=${CKAN_DATASTORE_READ_URL}
-      - CKAN_SOLR_URL=${CKAN_SOLR_URL}
-      - CKAN_REDIS_URL=${CKAN_REDIS_URL}
-      - CKAN_SITE_URL=${CKAN_SITE_URL}
+      - CKAN_SQLALCHEMY_URL=postgresql://ckan:${POSTGRES_PASSWORD}@db/ckan
+      - CKAN_DATASTORE_WRITE_URL=postgresql://ckan:${POSTGRES_PASSWORD}@db/datastore
+      - CKAN_DATASTORE_READ_URL=postgresql://datastore_ro:${DATASTORE_READONLY_PASSWORD}@db/datastore
+      - CKAN_SOLR_URL=http://solr:8983/solr/ckan
+      - CKAN_REDIS_URL=redis://redis:6379/0
+      - CKAN_SITE_URL=http://ckan-example.docker.amazee.io:8081
       - CKAN_SITE_TITLE=${CKAN_SITE_TITLE}
       - CKAN_MAX_UPLOAD_SIZE_MB=${CKAN_MAX_UPLOAD_SIZE_MB}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -91,7 +91,7 @@ services:
       - db_data:/var/lib/postgresql/data
     labels:
       # Lagoon Labels
-      lagoon.type: postgres-single
+      lagoon.type: postgres
     ports:
       - "5432"
 
@@ -102,7 +102,7 @@ services:
       - datastore_data:/var/lib/postgresql/data
     labels:
       # Lagoon Labels
-      lagoon.type: postgres-single
+      lagoon.type: postgres
     ports:
       - "5432"
       

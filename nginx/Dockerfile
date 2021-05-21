@@ -12,3 +12,5 @@ COPY nginx/setup/nginx.conf ${NGINX_DIR}
 COPY nginx/setup/sites-available/* ${NGINX_DIR}/sites-available
 
 RUN ln -s ${NGINX_DIR}/sites-available/ckan.conf ${NGINX_DIR}/sites-enabled/ckan.conf
+
+EXPOSE 80

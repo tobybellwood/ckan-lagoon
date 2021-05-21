@@ -7,7 +7,9 @@ LABEL maintainer="brett@kowh.ai"
 # RUN echo $TZ > /etc/timezone
 # RUN cp /usr/share/zoneinfo/$TZ /etc/localtime
 
-RUN apk add postgresql-client
+RUN pip install --upgrade pip && \
+    pip install wheel && \
+	apk add postgresql-client
 
 WORKDIR ${APP_DIR}
 
@@ -20,8 +22,7 @@ RUN pip3 install -e 'git+https://github.com/DataShades/ckanext-xloader@py3#egg=c
     pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt && \
     pip3 install -e 'git+https://github.com/DataShades/ckanext-syndicate@py3#egg=ckanext-syndicate' && \
     pip3 install -r ${APP_DIR}/src/ckanext-syndicate/requirements.txt && \
-    pip3 install -e 'git+https://github.com/ckan/ckanext-scheming.git@master#egg=ckanext-scheming' && \
-    pip3 install -r ${APP_DIR}/src/ckanext-scheming/test-requirements.txt
+    pip3 install -e 'git+https://github.com/ckan/ckanext-scheming.git@master#egg=ckanext-scheming'
     
 # Install crudini for configuration management
 ADD https://raw.githubusercontent.com/pixelb/crudini/master/crudini /usr/local/bin/crudini
@@ -30,7 +31,6 @@ RUN pip install iniparse && \
     
 # Copy all setup files
 COPY ckan-web/setup ${APP_DIR}
-COPY .env ${APP_DIR}
 COPY ckan.lagoon.* ${APP_DIR}/
 
 COPY ckan-web/setup/supervisord.conf /etc/supervisord.conf
@@ -50,6 +50,6 @@ RUN chown ckan -R /srv/app
 
 EXPOSE 8800
 
-# HEALTHCHECK --interval=10s --timeout=5s --retries=5 CMD curl --fail http://localhost:5000/api/3/action/status_show || exit 1
+# HEALTHCHECK --interval=10s --timeout=5s --retries=5 CMD curl --fail http://localhost:8800/api/3/action/status_show || exit 1
 
 CMD ["/srv/app/start_ckan.sh"]

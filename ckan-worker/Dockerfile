@@ -7,7 +7,9 @@ LABEL maintainer="brett@kowh.ai"
 # RUN echo $TZ > /etc/timezone
 # RUN cp /usr/share/zoneinfo/$TZ /etc/localtime
 
-RUN apk add postgresql-client
+RUN pip install --upgrade pip && \
+    pip install wheel && \
+	apk add postgresql-client
 
 WORKDIR ${APP_DIR}
 
@@ -20,8 +22,7 @@ RUN pip3 install -e 'git+https://github.com/DataShades/ckanext-xloader@py3#egg=c
     pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt && \
     pip3 install -e 'git+https://github.com/DataShades/ckanext-syndicate@py3#egg=ckanext-syndicate' && \
     pip3 install -r ${APP_DIR}/src/ckanext-syndicate/requirements.txt && \
-    pip3 install -e 'git+https://github.com/ckan/ckanext-scheming.git@master#egg=ckanext-scheming' && \
-    pip3 install -r ${APP_DIR}/src/ckanext-scheming/test-requirements.txt
+    pip3 install -e 'git+https://github.com/ckan/ckanext-scheming.git@master#egg=ckanext-scheming'
 
 # Install crudini for configuration management
 ADD https://raw.githubusercontent.com/pixelb/crudini/master/crudini /usr/local/bin/crudini
