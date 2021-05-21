@@ -63,14 +63,14 @@ then
       htpasswd -d -b -c /srv/app/.htpasswd $HTPASSWD_USER $HTPASSWD_PASSWORD
       # Start supervisord
       echo "[start_ckan.sh] Starting supervisord."
-      supervisord --configuration /etc/supervisord.conf
+      supervisord --configuration /etc/supervisord.conf &
     else
       echo "Missing HTPASSWD_USER or HTPASSWD_PASSWORD environment variables. Exiting..."
       exit 1
     fi
   else
-    # Start supervisord
     echo "[start_ckan.sh] Starting supervisord."
+    # Start supervisord
     supervisord --configuration /etc/supervisord.conf
   fi
 else

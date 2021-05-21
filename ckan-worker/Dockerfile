@@ -31,7 +31,6 @@ RUN pip3 install iniparse && \
 
 # Copy all setup files
 COPY ckan-worker/setup ${APP_DIR}
-COPY .env ${APP_DIR}
 COPY ckan.lagoon.* ${APP_DIR}/
 
 COPY ckan-worker/setup/supervisord.conf /etc/supervisord.conf
@@ -46,7 +45,7 @@ COPY ckan-worker/setup/create_datastore_user.sql ${APP_DIR}
 # Create local storage folder
 RUN mkdir -p $CKAN_STORAGE_PATH && \
     chown -R ckan:ckan $CKAN_STORAGE_PATH
-    
+
 # Create entrypoint directory for children image scripts
 ONBUILD RUN mkdir /docker-entrypoint.d
 

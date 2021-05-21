@@ -23,12 +23,12 @@ RUN pip3 install -e 'git+https://github.com/DataShades/ckanext-xloader@py3#egg=c
     pip3 install -e 'git+https://github.com/DataShades/ckanext-syndicate@py3#egg=ckanext-syndicate' && \
     pip3 install -r ${APP_DIR}/src/ckanext-syndicate/requirements.txt && \
     pip3 install -e 'git+https://github.com/ckan/ckanext-scheming.git@master#egg=ckanext-scheming'
-    
+
 # Install crudini for configuration management
 ADD https://raw.githubusercontent.com/pixelb/crudini/master/crudini /usr/local/bin/crudini
-RUN pip install iniparse && \
+RUN pip3 install iniparse && \
     chmod +x /usr/local/bin/crudini
-    
+
 # Copy all setup files
 COPY ckan-web/setup ${APP_DIR}
 COPY ckan.lagoon.* ${APP_DIR}/

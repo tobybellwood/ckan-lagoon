@@ -10,12 +10,12 @@ services:
     links:
       - ckan-web
     ports:
-      - "8081:80"
+      - "8080:8080"
     environment:
       LAGOON_LOCALDEV_URL: http://ckan-example.docker.amazee.io
     labels:
       # Lagoon Labels
-      lagoon.type: none
+      lagoon.type: nginx
 
   ckan-worker:
     container_name: ckan-worker
@@ -91,7 +91,7 @@ services:
       - db_data:/var/lib/postgresql/data
     labels:
       # Lagoon Labels
-      lagoon.type: postgres
+      lagoon.type: postgres-single
     ports:
       - "5432"
 
@@ -102,7 +102,7 @@ services:
       - datastore_data:/var/lib/postgresql/data
     labels:
       # Lagoon Labels
-      lagoon.type: postgres
+      lagoon.type: postgres-single
     ports:
       - "5432"
       
