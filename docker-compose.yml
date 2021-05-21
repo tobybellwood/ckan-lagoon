@@ -102,7 +102,7 @@ services:
       - datastore_data:/var/lib/postgresql/data
     labels:
       # Lagoon Labels
-      lagoon.type: postgres
+      lagoon.type: postgres-single
     ports:
       - "5432"
       
